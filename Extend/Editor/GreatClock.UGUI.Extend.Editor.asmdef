@@ -1,0 +1,16 @@
+{
+    "name": "GreatClock.UGUI.Extend.Editor",
+    "references": [
+        "GreatClock.UGUI.Extend"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
