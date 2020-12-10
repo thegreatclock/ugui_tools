@@ -24,111 +24,118 @@ namespace UnityEngine.UI {
 		public class UIEventMulti : UnityEvent<Vector2, Vector2> { }
 		public class UIEventMulti2 : UnityEvent<Vector2, Vector2, Vector2, Vector2> { }
 
+		private UIEvent mOnPress = new UIEvent();
+		/// <summary>
+		/// OnPress(Vector2 pos, ePointerType pointerType)
+		/// </summary>
+		public UIEvent OnPress { get { return mOnPress; } }
+
+
 		private UIEvent mOnClick = new UIEvent();
 		/// <summary>
-		/// OnClick(Vector2 pos, bool isRightClick)
+		/// OnClick(Vector2 pos, ePointerType pointerType)
 		/// </summary>
 		public UIEvent OnClick { get { return mOnClick; } }
 
 		private UIEvent mOnDoubleClick = new UIEvent();
 		/// <summary>
-		/// OnDoubleClick(Vector2 pos, bool isRightClick)
+		/// OnDoubleClick(Vector2 pos, ePointerType pointerType)
 		/// </summary>
 		public UIEvent OnDoubleClick { get { return mOnDoubleClick; } }
 
 		private UIEvent mOnDoubleLongPressClick = new UIEvent();
 		/// <summary>
-		/// OnDoubleLongPressClick(Vector2 pos, bool isRightClick)
+		/// OnDoubleLongPressClick(Vector2 pos, ePointerType pointerType)
 		/// </summary>
 		public UIEvent OnDoubleLongPressClick { get { return mOnDoubleLongPressClick; } }
 
 		private UIEvent mOnLongPress = new UIEvent();
 		/// <summary>
-		/// OnLongPress(Vector2 pos, bool isRightClick)
+		/// OnLongPress(Vector2 pos, ePointerType pointerType)
 		/// </summary>
 		public UIEvent OnLongPress { get { return mOnLongPress; } }
 
 		private UIEvent mOnLongPressClick = new UIEvent();
 		/// <summary>
-		/// OnLongPressClick(Vector2 pos, bool isRightClick)
+		/// OnLongPressClick(Vector2 pos, ePointerType pointerType)
 		/// </summary>
 		public UIEvent OnLongPressClick { get { return mOnLongPressClick; } }
 
 		private UIEvent mOnLongPress2 = new UIEvent();
 		/// <summary>
-		/// OnLongPress2(Vector2 pos, bool isRightClick)
+		/// OnLongPress2(Vector2 pos, ePointerType pointerType)
 		/// </summary>
 		public UIEvent OnLongPress2 { get { return mOnLongPress2; } }
 
 		private UIEvent mOnDragStart = new UIEvent();
 		/// <summary>
-		/// OnDragStart(Vector2 startPos, bool isRightClick)
+		/// OnDragStart(Vector2 startPos, ePointerType pointerType)
 		/// </summary>
 		public UIEvent OnDragStart { get { return mOnDragStart; } }
 
 		private UIEventDrag mOnDragging = new UIEventDrag();
 		/// <summary>
-		/// OnDragging(Vector2 startPos, Vector2 delta, bool isRightClick)
+		/// OnDragging(Vector2 startPos, Vector2 delta, ePointerType pointerType)
 		/// </summary>
 		public UIEventDrag OnDragging { get { return mOnDragging; } }
 
 		private UIEventDrag mOnDragEnd = new UIEventDrag();
 		/// <summary>
-		/// OnDragEnd(Vector2 startPos, Vector2 endPos, bool isRightClick)
+		/// OnDragEnd(Vector2 startPos, Vector2 endPos, ePointerType pointerType)
 		/// </summary>
 		public UIEventDrag OnDragEnd { get { return mOnDragEnd; } }
 
 		private UIEvent mOnLongPressDragStart = new UIEvent();
 		/// <summary>
-		/// OnLongPressDragStart(Vector2 startPos, bool isRightClick)
+		/// OnLongPressDragStart(Vector2 startPos, ePointerType pointerType)
 		/// </summary>
 		public UIEvent OnLongPressDragStart { get { return mOnLongPressDragStart; } }
 
 		private UIEventDrag mOnLongPressDragging = new UIEventDrag();
 		/// <summary>
-		/// OnLongPressDragging(Vector2 startPos, Vector2 delta, bool isRightClick)
+		/// OnLongPressDragging(Vector2 startPos, Vector2 delta, ePointerType pointerType)
 		/// </summary>
 		public UIEventDrag OnLongPressDragging { get { return mOnLongPressDragging; } }
 
 		private UIEventDrag mOnLongPressDragEnd = new UIEventDrag();
 		/// <summary>
-		/// OnLongPressDragEnd(Vector2 startPos, Vector2 endPos, bool isRightClick)
+		/// OnLongPressDragEnd(Vector2 startPos, Vector2 endPos, ePointerType pointerType)
 		/// </summary>
 		public UIEventDrag OnLongPressDragEnd { get { return mOnLongPressDragEnd; } }
 
 		private UIEvent mOnDoubleClickDragStart = new UIEvent();
 		/// <summary>
-		/// OnDoubleClickDragStart(Vector2 startPos, bool isRightClick)
+		/// OnDoubleClickDragStart(Vector2 startPos, ePointerType pointerType)
 		/// </summary>
 		public UIEvent OnDoubleClickDragStart { get { return mOnDoubleClickDragStart; } }
 
 		private UIEventDrag mOnDoubleClickDragging = new UIEventDrag();
 		/// <summary>
-		/// OnDoubleClickDragging(Vector2 startPos, Vector2 delta, bool isRightClick)
+		/// OnDoubleClickDragging(Vector2 startPos, Vector2 delta, ePointerType pointerType)
 		/// </summary>
 		public UIEventDrag OnDoubleClickDragging { get { return mOnDoubleClickDragging; } }
 
 		private UIEventDrag mOnDoubleClickDragEnd = new UIEventDrag();
 		/// <summary>
-		/// OnDoubleClickDragEnd(Vector2 startPos, Vector2 endPos, bool isRightClick)
+		/// OnDoubleClickDragEnd(Vector2 startPos, Vector2 endPos, ePointerType pointerType)
 		/// </summary>
 		public UIEventDrag OnDoubleClickDragEnd { get { return mOnDoubleClickDragEnd; } }
 
 		private UIEvent mOnDoubleClickLongPressDragStart = new UIEvent();
 		/// <summary>
-		/// OnDoubleClickLongPressDragStart(Vector2 startPos, bool isRightClick)
+		/// OnDoubleClickLongPressDragStart(Vector2 startPos, ePointerType pointerType)
 		/// </summary>
 		public UIEvent OnDoubleClickLongPressDragStart { get { return mOnDoubleClickLongPressDragStart; } }
 
 		private UIEventDrag mOnDoubleClickLongPressDragging = new UIEventDrag();
 		/// <summary>
-		/// OnDoubleClickLongPressDragging(Vector2 startPos, Vector2 delta, bool isRightClick)
+		/// OnDoubleClickLongPressDragging(Vector2 startPos, Vector2 delta, ePointerType pointerType)
 		/// </summary>
 		public UIEventDrag OnDoubleClickLongPressDragging { get { return mOnDoubleClickLongPressDragging; } }
 
 		private UIEventDrag mOnDoubleClickLongPressDragEnd = new UIEventDrag();
 		/// <summary>
-		/// OnDoubleClickLongPressDragEnd(Vector2 startPos, Vector2 endPos, bool isRightClick)
+		/// OnDoubleClickLongPressDragEnd(Vector2 startPos, Vector2 endPos, ePointerType pointerType)
 		/// </summary>
 		public UIEventDrag OnDoubleClickLongPressDragEnd { get { return mOnDoubleClickLongPressDragEnd; } }
 
@@ -202,6 +209,12 @@ namespace UnityEngine.UI {
 				p0.DownPos = p0.PrevPos;
 				p1.DownPos = p1.PrevPos;
 				mOnMultiTouchBegin.Invoke(p0.DownPos, p1.DownPos);
+			} else {
+				ePointerType pt = ePointerType.Touch;
+				if (eventData.pointerId < 0) {
+					pt = eventData.pointerId == -2 ? ePointerType.Right : ePointerType.Left;
+				}
+				mOnPress.Invoke(pos, pt);
 			}
 		}
 
