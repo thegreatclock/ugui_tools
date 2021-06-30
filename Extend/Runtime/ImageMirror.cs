@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine.Sprites;
+using UnityEngine.U2D;
 
 namespace UnityEngine.UI {
 
@@ -38,6 +40,9 @@ namespace UnityEngine.UI {
 
 		private float m_AlphaHitTestMinimumThreshold = 0f;
 
+		// Whether this is being tracked for Atlas Binding.
+		private bool m_Tracked = false;
+
 		private static float[] cached_xs = new float[5];
 		private static float[] cached_ys = new float[5];
 		private static float[] cached_us = new float[5];
@@ -52,8 +57,15 @@ namespace UnityEngine.UI {
 			}
 			set {
 				if (m_Sprite != value) {
+					Vector2 size0 = m_Sprite == null ? Vector2.zero : m_Sprite.rect.size;
+					Vector2 size1 = value == null ? Vector2.zero : value.rect.size;
+					Texture tex0 = m_Sprite == null ? null : m_Sprite.texture;
+					Texture tex1 = value == null ? null : value.texture;
+					m_SkipLayoutUpdate = size0 == size1;
+					m_SkipMaterialUpdate = tex0 == tex1;
 					m_Sprite = value;
 					SetAllDirty();
+					TrackSprite();
 				}
 			}
 		}
@@ -69,6 +81,7 @@ namespace UnityEngine.UI {
 				if (m_OverrideSprite != value) {
 					m_OverrideSprite = value;
 					SetAllDirty();
+					TrackSprite();
 				}
 			}
 		}
@@ -191,21 +204,39 @@ namespace UnityEngine.UI {
 			}
 		}
 
+		[SerializeField]
+		private float m_PixelsPerUnitMultiplier = 1.0f;
+
+		/// <summary>
+		/// Pixel per unit modifier to change how sliced sprites are generated.
+		/// </summary>
+		public float pixelsPerUnitMultiplier {
+			get { return m_PixelsPerUnitMultiplier; }
+			set {
+				m_PixelsPerUnitMultiplier = Mathf.Max(0.01f, value);
+			}
+		}
+
+		private float m_CachedReferencePixelsPerUnit = 100f;
+
 		/// <summary>
 		/// Pixels per unit considering sprite
 		/// </summary>
 		public float pixelsPerUnit {
 			get {
-				float num = 100f;
+				float spritePixelsPerUnit = 100f;
 				if (activeSprite) {
-					num = activeSprite.pixelsPerUnit;
+					spritePixelsPerUnit = activeSprite.pixelsPerUnit;
 				}
-				float num2 = 100f;
 				if (canvas != null) {
-					num2 = canvas.referencePixelsPerUnit;
+					m_CachedReferencePixelsPerUnit = canvas.referencePixelsPerUnit;
 				}
-				return num / num2;
+				return spritePixelsPerUnit / m_CachedReferencePixelsPerUnit;
 			}
+		}
+
+		protected float multipliedPixelsPerUnit {
+			get { return pixelsPerUnit * m_PixelsPerUnitMultiplier; }
 		}
 
 		/// <summary>
@@ -403,8 +434,8 @@ namespace UnityEngine.UI {
 				Vector4 padding = DataUtility.GetPadding(asp);
 				Vector4 border = asp.border;
 				Rect rect = GetDrawingRect();
-				border = GetAdjustedBorders(border / pixelsPerUnit, rect);
-				padding /= pixelsPerUnit;
+				border = GetAdjustedBorders(border / multipliedPixelsPerUnit, rect);
+				padding /= multipliedPixelsPerUnit;
 				float cw = rect.width * 0.5f + rect.xMin;
 				float ch = rect.height * 0.5f + rect.yMin;
 				int cx = 0;
@@ -736,6 +767,25 @@ namespace UnityEngine.UI {
 			}
 		}
 
+		private void TrackSprite() {
+			if (activeSprite != null && activeSprite.texture == null) {
+				TrackImage(this);
+				m_Tracked = true;
+			}
+		}
+
+		protected override void OnEnable() {
+			base.OnEnable();
+			TrackSprite();
+		}
+
+		protected override void OnDisable() {
+			base.OnDisable();
+			if (m_Tracked) {
+				UnTrackImage(this);
+			}
+		}
+
 		protected override void UpdateMaterial() {
 			base.UpdateMaterial();
 			if (activeSprite == null) {
@@ -956,7 +1006,44 @@ namespace UnityEngine.UI {
 			}
 			return result;
 		}
-		
+
+		static List<ImageMirror> m_TrackedTexturelessImages = new List<ImageMirror>();
+		static bool s_Initialized;
+
+		static void RebuildImage(SpriteAtlas spriteAtlas) {
+			for (var i = m_TrackedTexturelessImages.Count - 1; i >= 0; i--) {
+				var g = m_TrackedTexturelessImages[i];
+				if (null != g.activeSprite && spriteAtlas.CanBindTo(g.activeSprite)) {
+					g.SetAllDirty();
+					m_TrackedTexturelessImages.RemoveAt(i);
+				}
+			}
+		}
+
+		private static void TrackImage(ImageMirror g) {
+			if (!s_Initialized) {
+				SpriteAtlasManager.atlasRegistered += RebuildImage;
+				s_Initialized = true;
+			}
+			m_TrackedTexturelessImages.Add(g);
+		}
+
+		private static void UnTrackImage(ImageMirror g) {
+			m_TrackedTexturelessImages.Remove(g);
+		}
+
+		protected override void OnDidApplyAnimationProperties() {
+			SetMaterialDirty();
+			SetVerticesDirty();
+		}
+
+#if UNITY_EDITOR
+		protected override void OnValidate() {
+			base.OnValidate();
+			m_PixelsPerUnitMultiplier = Mathf.Max(0.01f, m_PixelsPerUnitMultiplier);
+		}
+#endif
+
 	}
 
 }
